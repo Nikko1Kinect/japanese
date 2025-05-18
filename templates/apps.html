@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}Програма Субтитрування — Whisper{% endblock %}
+
+{% block content %}
+<link rel="icon" href="{{ url_for('static', filename='app.png') }}" type="image/x-icon">
+
+<div class="program-info">
+    <h1>Програма для створення субтитрів</h1>
+    <p>
+        Це інструмент, що дозволяє автоматично створювати субтитри до відео та аудіо файлів за допомогою <strong>OpenAI Whisper</strong>. 
+        Програма підтримує кілька мов, автоматичне розпізнавання мовлення, зручний графічний інтерфейс, експорт субтитрів у форматах <code>.srt</code>та <code>.txt</code>.
+    </p>
+
+    <h2>Можливості:</h2>
+    <ul>
+        <li>Автоматична транскрипція відео та аудіо</li>
+        <li>Підтримка української, англійської, російської та інших мов</li>
+        <li>Збереження субтитрів у популярних форматах</li>
+        <li>Попередній перегляд субтитрів у вбудованому редакторі</li>
+        <li>Налаштування таймінгів і автосинхронізація</li>
+    </ul>
+
+    <div class="screenshots">
+        <h2>Скріншоти</h2>
+        <div class="screenshot-gallery" style="display: flex; gap: 20px; flex-wrap: wrap;">
+            <img src="{{ url_for('static', filename='sc1.png') }}" alt="Головне вікно" width="300">
+            <img src="{{ url_for('static', filename='sc2.png') }}" alt="Результат транскрипції" width="300">
+        </div>
+    </div>
+
+    <div class="download-buttons" style="margin-top: 30px;">
+        <a href="https://drive.google.com/file/d/1h4wbZD957MlcxQay1TxRLAmMeBdZljl4/view?usp=sharing" class="btn btn-secondary" download>⬇ Завантажити як Python-проєкт</a>
+    </div>
+</div>
+
+<hr>
+
+<div class="updates" style="margin-top: 40px;">
+    <h2>Оновлення</h2>
+    <div class="update-list">
+        {% for update in updates %}
+            <div class="update-item">
+                <h3>Версія {{ update.version }}</h3>
+                <p>{{ update.description }}</p>
+                {% if update.details %}
+                    <ul>
+                        {% for detail in update.details %}
+                            <li>{{ detail }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

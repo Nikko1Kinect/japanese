@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block title %}Субтитри{% endblock %}
+
+{% block content %}
+<link rel="icon" href="static\word-of-mouth.png" type="image/x-icon">
+<!-- Search Bar -->
+<div style="margin-bottom: 20px;">
+    <form action="/subtitles" method="GET">
+        <input type="text" name="q" placeholder="Search subtitles by title..." style="width: 80%; padding: 8px;">
+        <button type="submit" style="padding: 8px 16px; background-color: #007bff; color: white; border: none; border-radius: 4px;">Search</button>
+    </form>
+</div>
+
+<div class="subtitle-list">
+    {% for subtitle in subtitles %}
+        <div class="book">
+            {% if subtitle.cover %}
+                <img src="{{ url_for('static', filename=subtitle.cover) }}" alt="{{ subtitle.title }} cover" style="height: 120px; display: block; margin-bottom: 8px;">
+            {% else %}
+                <img src="{{ url_for('static', filename='subtitle.png') }}" alt="No cover" style="height: 120px; display: block; margin-bottom: 8px; opacity: 0.5;">
+            {% endif %}
+            <div class="book-title">{{ subtitle.title }}</div>
+            <div class="book-author">{{ subtitle.description[:30] }}...</div>
+            <a href="/subtitles/{{ subtitle.filename }}"><button>Перейти</button></a>
+        </div>
+    {% endfor %}
+</div>
+
+<!-- Subtitle Upload Form -->
+<div id="subtitle-upload-form" style="display: none; margin-top: 20px;">
+    <h3>Upload a New Subtitle</h3>
+    <form action="/upload_subtitle" method="POST" enctype="multipart/form-data">
+        <div style="margin-bottom: 10px;">
+            <label for="title">Subtitle Title:</label><br>
+            <input type="text" id="title" name="title" placeholder="Enter subtitle title" style="width: 100%; padding: 8px;">
+        </div>
+        <div style="margin-bottom: 10px;">
+            <label for="description">Description:</label><br>
+            <textarea id="description" name="description" placeholder="Enter subtitle description" style="width: 100%; padding: 8px;" rows="3"></textarea>
+        </div>
+        <div style="margin-bottom: 10px;">
+            <label for="video_url">Video URL:</label><br>
+            <input type="url" id="video_url" name="video_url" placeholder="Enter video URL" style="width: 100%; padding: 8px;">
+        </div>
+        <div style="margin-bottom: 10px;">
+            <label for="subtitle_file">Subtitle File:</label><br>
+            <input type="file" id="subtitle_file" name="subtitle_file" style="width: 100%;">
+        </div>
+        <div style="margin-bottom: 10px;">
+    <label for="cover_file">Cover Image (File):</label><br>
+    <input type="file" id="cover_file" name="cover_file" style="width: 100%;">
+</div>
+
+        <button type="submit" style="padding: 10px 20px; background-color: #007bff; color: white; border: none; border-radius: 5px;">Upload Subtitle</button>
+    </form>
+</div>
+
+<!-- Floating Add Button -->
+<a href="#" onclick="toggleUploadForm();" class="floating-button">+</a>
+
+<style>
+.floating-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    background-color: #007bff;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    text-decoration: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+}
+.floating-button:hover {
+    background-color: #0056b3;
+}
+</style>
+
+<script>
+function toggleUploadForm() {
+    const form = document.getElementById('subtitle-upload-form');
+    form.style.display = form.style.display === 'none' ? 'block' : 'none';
+}
+</script>
+{% endblock %}

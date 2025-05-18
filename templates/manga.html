@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+
+{% block title %}Головна{% endblock %}
+
+{% block content %}
+<!-- Search Bar -->
+<div style="margin-bottom: 20px;">
+    <form action="/search_manga" method="GET">
+        <input type="text" name="q" placeholder="Search books by title or author..." style="width: 80%; padding: 8px;">
+        <button type="submit" style="padding: 8px 16px; background-color: #007bff; color: white; border: none; border-radius: 4px;">Search</button>
+    </form>
+</div>
+
+<link rel="icon" href="{{ url_for('static', filename='comic.png') }}" type="image/x-icon">
+
+<div class="book-list">
+    {% for book in books %}
+        <div class="book" style="border: 1px solid #ddd; padding: 10px; margin-bottom: 10px;">
+            {% if book.cover %}
+                <img src="{{ url_for('static', filename=book.cover) }}" alt="{{ book.title }} cover" style="height: 120px; display: block; margin-bottom: 8px;">
+            {% else %}
+                <img src="{{ url_for('static', filename='book.png') }}" alt="No cover" style="height: 120px; display: block; margin-bottom: 8px; opacity: 0.5;">
+            {% endif %}
+            <div class="book-title"><strong>{{ book.title }}</strong></div>
+            <div class="book-author">Автор: {{ book.author }}</div>
+
+            <a href="https://japaneselearninglib.neocities.org/" target="_blank" rel="noopener noreferrer">
+                
+                <button>Читати </button>
+            </a>
+
+
+        </div>
+    {% endfor %}
+</div>
+
+<!-- Book Upload Form -->
+<div id="book-upload-form" style="display: none; margin-top: 20px;">
+    <h3>Завантажити мангу</h3>
+    <form id="uploadForm" action="/upload_manga" method="POST" enctype="multipart/form-data">
+        <div style="margin-bottom: 10px;">
+            <label for="title">Назва манги:</label><br>
+            <input type="text" id="title" name="title" placeholder="Введіть назву книги" style="width: 100%; padding: 8px;">
+        </div>
+        <div style="margin-bottom: 10px;">
+            <label for="author">Автор:</label><br>
+            <input type="text" id="author" name="author" placeholder="Введіть ім'я автора" style="width: 100%; padding: 8px;">
+        </div>
+        <div style="margin-bottom: 10px;">
+            <label for="file_url">Лінк на мангу (URL):</label><br>
+            <input type="url" id="file_url" name="file_url" placeholder="https://..." style="width: 100%; padding: 8px;">
+        </div>
+        <div style="margin-bottom: 10px;">
+            <label for="cover_file">Обкладинка книги (файл):</label><br>
+            <input type="file" id="cover_file" name="cover_file" style="width: 100%;">
+        </div>
+        <button type="submit" style="padding: 10px 20px; background-color: #007bff; color: white; border: none; border-radius: 5px;">Завантажити</button>
+    </form>
+</div>
+
+<!-- Floating Add Button -->
+<a href="#" onclick="toggleUploadForm();" class="floating-button">+</a>
+
+<style>
+.floating-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    background-color: #007bff;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    text-decoration: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+}
+.floating-button:hover {
+    background-color: #0056b3;
+}
+</style>
+
+<script>
+    function deleteBook(filename) {
+        fetch('/delete_manga', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ filename: filename })
+        }).then(response => response.json())
+          .then(data => {
+              alert(data.message);
+              location.reload();
+          });
+    }
+
+    function toggleUploadForm() {
+        const form = document.getElementById('book-upload-form');
+        form.style.display = form.style.display === 'none' ? 'block' : 'none';
+    }
+</script>
+{% endblock %}

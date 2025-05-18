@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}Ширіторі AI{% endblock %}
+
+{% block content %}
+<link rel="icon" href="static\subtitle.png" type="image/x-icon">
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+<div class="chat-container">
+  <h2 style="text-align: center;">🈳 Ширіторі AI</h2>
+  <div class="chat-box" id="chat-box">
+    {% for sender, message in history %}
+      <div class="message {{ 'user' if sender == 'Ти' else 'bot' }}">
+        <div class="bubble">
+          <strong>{{ sender }}:</strong> {{ message }}
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+  <form method="post" class="chat-form">
+    <input type="text" name="message" autocomplete="off" placeholder="Введи слово без фуріґани..." required>
+    <button type="submit">▶️</button>
+  </form>
+  <a href="{{ url_for('reset') }}" class="reset-link">🔁 Почати спочатку</a>
+</div>
+
+<script>
+  const box = document.getElementById('chat-box');
+  box.scrollTop = box.scrollHeight;
+</script>
+{% endblock %}

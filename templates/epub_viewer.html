@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}EPUB Reader{% endblock %}
+
+{% block content %}
+<link rel="icon" href="static\book.png" type="image/x-icon">
+<div style="max-width: 900px; margin: 0 auto; padding: 20px; font-family: inherit;">
+    <h2>{{ filename }}</h2>
+    <div style="margin-bottom: 20px;">
+        <label for="font-size">Розмір шрифту:</label>
+        <input type="range" min="14" max="32" value="18" id="font-size" oninput="setFontSize(this.value)">
+        <span id="font-size-value">18</span> px
+    </div>
+    <div class="epub-page" id="epub-chapters" style="font-size: 18px; white-space: pre-wrap; line-height: 1.6; background: #fff; box-shadow: 0 2px 16px rgba(0,0,0,0.15); border-radius: 8px; padding: 32px 32px 48px 32px; min-height: 500px; position: relative;">
+        <h3 style="margin-top:0;">{{ chapters[page].title }}</h3>
+        <div>{{ chapters[page].content }}</div>
+        <div style="position: absolute; bottom: 16px; right: 32px; color: #888; font-size: 14px;">Сторінка {{ page+1 }} з {{ chapters|length }}</div>
+    </div>
+    <div style="margin-top: 30px; display: flex; justify-content: space-between;">
+        {% if page > 0 %}
+            <a href="{{ url_for('read_book', filename=filename, page=page - 1) }}" style="padding: 8px 16px; background: #007bff; color: #fff; border-radius: 4px; text-decoration: none;">← Попередня</a>
+        {% else %}
+            <span></span>
+        {% endif %}
+        {% if page < chapters|length - 1 %}
+            <a href="{{ url_for('read_book', filename=filename, page=page + 1) }}" style="padding: 8px 16px; background: #007bff; color: #fff; border-radius: 4px; text-decoration: none;">Наступна →</a>
+        {% endif %}
+    </div>
+</div>
+<script>
+function setFontSize(size) {
+    document.getElementById('epub-chapters').style.fontSize = size + 'px';
+    document.getElementById('font-size-value').innerText = size;
+}
+</script>
+{% endblock %}

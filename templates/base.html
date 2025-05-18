@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Learn Japanese{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <nav>
+        <a href="/">Книги</a>
+        <a href="/manga">Манга</a>
+        <a href="/subtitles">Субтитри</a>
+        <a href="/shiritori">Ширіторі</a>
+        <a href="/apps">Програми</a>
+        <a href="/whats_new">Що нового</a>
+        <a href="/about">Про проект</a>
+    </nav>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+        Версія {{ version }} | Розроблено Bublyk Studio
+    </footer>
+</body>
+</html>

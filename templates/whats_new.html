@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Що нового{% endblock %}
+
+{% block content %}
+<link rel="icon" href="static\updated.png" type="image/x-icon">
+<div class="updates">
+    <h2>Оновлення</h2>
+    <div class="update-list">
+        {% for update in updates %}
+            <div class="update-item">
+                <h3>Версія {{ update.version }}</h3>
+                <p>{{ update.description }}</p>
+                {% if update.details %}
+                    <ul>
+                        {% for detail in update.details %}
+                            <li>{{ detail }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

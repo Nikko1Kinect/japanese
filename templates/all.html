@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="uk">
+<link rel="icon" href="static\home.png" type="image/x-icon">
+<head>
+    <meta charset="UTF-8">
+    <title>Усі книги</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <nav>
+        <a href="/">Головна</a>
+        <a href="/all" class="active">Усі</a>
+    </nav>
+    <div class="book-list">
+        {% for book in books %}
+            <div class="book">
+                {% if book.cover %}
+                    <img src="{{ url_for('static', filename=book.cover) }}" alt="{{ book.title }} cover" style="height: 120px; display: block; margin-bottom: 8px;">
+                {% else %}
+                    <img src="{{ url_for('static', filename='book.png') }}" alt="No cover" style="height: 120px; display: block; margin-bottom: 8px; opacity: 0.5;">
+                {% endif %}
+                <div class="book-title">{{ book.title }}</div>
+                <div class="book-author">Автор: {{ book.author }}</div>
+                <a href="/viewer/{{ book.filename }}"><button>Переглянути</button></a>
+            </div>
+        {% endfor %}
+    </div>
+</body>
+</html>

@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block title %}Переглядач{% endblock %}
+
+{% block content %}
+<link rel="icon" href="static\viewer.png" type="image/x-icon">
+<div class="viewer-container">
+    <iframe src="{{ url_for('book', filename=filename) }}" frameborder="0" class="viewer-frame"></iframe>
+</div>
+
+{% endblock %}
